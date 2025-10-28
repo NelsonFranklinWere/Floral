@@ -8,6 +8,7 @@ import { Menu, X, MessageCircle } from 'lucide-react'
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [logoErrored, setLogoErrored] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
@@ -62,14 +63,30 @@ const Header: React.FC = () => {
         <div className="container-custom">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <motion.div
+            <motion.a
+              href="/"
               className="flex items-center gap-3"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-romantic-500 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">F</span>
-              </div>
+              {logoErrored ? (
+                <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-romantic-500 rounded-xl flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">F</span>
+                </div>
+              ) : (
+                <picture>
+                  <source srcSet="/images/florallogo.webp" type="image/webp" />
+                  <source srcSet="/images/florallogo.png" type="image/png" />
+                  <source srcSet="/images/florallogo.jpg" type="image/jpeg" />
+                  <img
+                    src="/images/florallogo.jpeg"
+                    alt={`${brandInfo.name} logo`}
+                    className="w-10 h-10 rounded-lg object-contain"
+                    loading="eager"
+                    onError={() => setLogoErrored(true)}
+                  />
+                </picture>
+              )}
               <div>
                 <h1 className="font-playfair font-bold text-xl text-neutral-800 transition-colors duration-300">
                   {brandInfo.name}
@@ -78,7 +95,7 @@ const Header: React.FC = () => {
                   {brandInfo.tagline}
                 </p>
               </div>
-            </motion.div>
+            </motion.a>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-8">
